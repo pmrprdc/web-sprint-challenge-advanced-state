@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchQuiz } from '../state/action-creators';
+import { fetchQuiz, setSelectedAnswer } from '../state/action-creators';
 
 function Quiz(props) {
   useEffect(() => {
@@ -22,22 +22,22 @@ function Quiz(props) {
             <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
+              <div className={selectedAnswer === quiz.answers[0].text ? "answer selected" : "answer"}>
                 {quiz.answers[0].text}
-                <button>
-                  SELECTED
+                <button onClick={props.setSelectedAnswer}>
+                  {selectedAnswer === quiz.answers[0].text ? "SELECTED" : "Select"}
                 </button>
               </div>
 
-              <div className="answer">
+              <div className={selectedAnswer === quiz.answers[0].text ? "answer selected" : "answer"}>
               {quiz.answers[1].text}
-                <button>
+                <button onClick={props.setSelectedAnswer}>
                   Select
                 </button>
               </div>
             </div>
 
-            <button onClick={()=>""} id="submitAnswerBtn">Submit answer</button>
+            <button onClick={props.setSelectedAnswer} id="submitAnswerBtn">Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -56,4 +56,4 @@ const mapStateToProps = state => {
 
 
 
-export default connect(mapStateToProps, {fetchQuiz})(Quiz);
+export default connect(mapStateToProps, {fetchQuiz,setSelectedAnswer})(Quiz);
