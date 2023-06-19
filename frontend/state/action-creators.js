@@ -1,26 +1,88 @@
 // ❗ You don't need to add extra action creators to achieve MVP
-export function moveClockwise() { }
+import {
+  MOVE_CLOCKWISE,
+  MOVE_COUNTERCLOCKWISE,
+  SET_QUIZ_INTO_STATE,
+  SET_SELECTED_ANSWER,
+  SET_INFO_MESSAGE,
+  INPUT_CHANGE,
+  RESET_FORM
+} from "./action-types";
+import axios from "axios";
 
-export function moveCounterClockwise() { }
+export function moveClockwise() {
+  return {
+    type: MOVE_CLOCKWISE
+  };
+}
 
-export function selectAnswer() { }
+export function moveCounterClockwise() {
+  return {
+    type: MOVE_COUNTERCLOCKWISE
+  };
+}
 
-export function setMessage() { }
+export function setQuizIntoState(quiz) {
+  return {
+    type: SET_QUIZ_INTO_STATE,
+    payload: quiz
+  };
+}
 
-export function setQuiz() { }
+export function setSelectedAnswer(answer) {
+  return {
+    type: SET_SELECTED_ANSWER,
+    payload: answer
+  };
+}
 
-export function inputChange() { }
+export function setInfoMessage(message) {
+  return {
+    type: SET_INFO_MESSAGE,
+    payload: message
+  };
+}
 
-export function resetForm() { }
+export function inputChange(value) {
+  return {
+    type: INPUT_CHANGE,
+    payload: value
+  };
+}
+
+export function resetForm() {
+  return {
+    type: RESET_FORM
+  };
+}
+
 
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
-    // On successful GET:
-    // - Dispatch an action to send the obtained quiz to its state
-  }
+    dispatch(resetForm());
+
+    axios
+      .get('http://localhost:9000/api/quiz/next') // Replace '/api/quiz' with your actual API endpoint
+      .then((response) => {
+        // Extract the quiz data from the response
+        const quiz = response.data; // Adjust this line based on your API response structure
+        
+        // On successful GET:
+        // - Dispatch an action to send the obtained quiz to its state
+        dispatch(setQuizIntoState(quiz)); // Replace 'setQuiz' with your actual action creator
+        dispatch(setInfoMessage('Quiz loaded successfully')); // Replace 'setMessage' with your actual action creator
+      })
+      .catch((error) => {
+        // If there's an error during the API call, dispatch an action to handle the error
+        dispatch(setInfoMessage('Error loading quiz')); // Replace 'setMessage' with your actual action creator
+        dispatch(setInfoMessage(error)); // Replace 'quizError' with your actual error handling action creator
+      });
+  };
 }
+
+
 export function postAnswer() {
   return function (dispatch) {
     // On successful POST:
