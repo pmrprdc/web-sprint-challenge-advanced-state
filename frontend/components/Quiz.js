@@ -5,34 +5,38 @@ import { fetchQuiz, setSelectedAnswer } from '../state/action-creators';
 function Quiz(props) {
   useEffect(() => {
     props.fetchQuiz();
+    
   }, [])
   
 
   const { quiz, selectedAnswer } = props;
 
-
+  
   
   return (
+    
     <div id="wrapper">
       {
         
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
         props.quiz ? (
+          
           <>
+          {console.log(quiz.answers)}
             <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
               <div className={selectedAnswer === quiz.answers[0].text ? "answer selected" : "answer"}>
                 {quiz.answers[0].text}
-                <button onClick={props.setSelectedAnswer}>
+                <button id={quiz.answers[0].id} onClick={()=>props.setSelectedAnswer(quiz.answers[0].text)}>
                   {selectedAnswer === quiz.answers[0].text ? "SELECTED" : "Select"}
                 </button>
               </div>
 
-              <div className={selectedAnswer === quiz.answers[0].text ? "answer selected" : "answer"}>
+              <div className={selectedAnswer === quiz.answers[1].text ? "answer selected" : "answer"}>
               {quiz.answers[1].text}
-                <button onClick={props.setSelectedAnswer}>
-                  Select
+                <button  onClick={()=>props.setSelectedAnswer(quiz.answers[1].text)}>
+                {selectedAnswer === quiz.answers[1].text ? "SELECTED" : "Select"}
                 </button>
               </div>
             </div>
