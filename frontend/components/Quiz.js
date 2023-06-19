@@ -5,10 +5,13 @@ import { fetchQuiz } from '../state/action-creators';
 function Quiz(props) {
   useEffect(() => {
     props.fetchQuiz();
-    console.log(props.selectedAnswer)
   }, [])
+  
+
+  const { quiz, selectedAnswer } = props;
 
 
+  
   return (
     <div id="wrapper">
       {
@@ -16,18 +19,18 @@ function Quiz(props) {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
         props.quiz ? (
           <>
-            <h2>Question</h2>
+            <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
               <div className="answer selected">
-                A function
+                {quiz.answers[0].text}
                 <button>
                   SELECTED
                 </button>
               </div>
 
               <div className="answer">
-                An elephant
+              {quiz.answers[1].text}
                 <button>
                   Select
                 </button>
