@@ -5,6 +5,7 @@ import { fetchQuiz } from '../state/action-creators';
 function Quiz(props) {
   useEffect(() => {
     props.fetchQuiz();
+    console.log(props.selectedAnswer)
   }, [])
 
 
