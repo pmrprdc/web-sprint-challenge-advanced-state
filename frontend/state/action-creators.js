@@ -10,6 +10,8 @@ import {
 } from "./action-types";
 import axios from "axios";
 
+
+
 export function moveClockwise() {
   return {
     type: MOVE_CLOCKWISE
@@ -83,19 +85,55 @@ export function fetchQuiz() {
 }
 
 
-export function postAnswer() {
+export function postAnswer(answers) {
   return function (dispatch) {
     // On successful POST:
+
     // - Dispatch an action to reset the selected answer state
+    dispatch(setSelectedAnswer(null))
     // - Dispatch an action to set the server message to state
+    axios
+      .post( answers,'http://localhost:9000/api/quiz/answer') // Replace '/api/quiz' with your actual API endpoint
+      .then((response) => {
+        // Extract the quiz data from the response
+        console.log(response.data); // Adjust this line based on your API response structure
+        
+        // On successful GET:
+        // - Dispatch an action to send the obtained quiz to its state
+        dispatch(setQuizIntoState(quiz)); // Replace 'setQuiz' with your actual action creator
+        dispatch(setInfoMessage('Quiz loaded successfully')); // Replace 'setMessage' with your actual action creator
+      })
+      .catch((error) => {
+        // If there's an error during the API call, dispatch an action to handle the error
+        dispatch(setInfoMessage('Error loading quiz')); // Replace 'setMessage' with your actual action creator
+        dispatch(setInfoMessage(error)); // Replace 'quizError' with your actual error handling action creator
+      });
     // - Dispatch the fetching of the next quiz
+
+    
   }
 }
-export function postQuiz() {
+export function postQuiz(submitData) {
   return function (dispatch) {
-    // On successful POST:
-    // - Dispatch the correct message to the the appropriate state
-    // - Dispatch the resetting of the form
+    // Make the POST request using Axios
+    axios.post('http://localhost:9000/api/quiz/new', submitData)
+      .then(response => {
+        // On successful POST:
+        
+        // - Dispatch the correct message to the appropriate state
+        dispatch(setInfoMessage());
+
+        // - Dispatch the resetting of the form
+        dispatch(resetForm());
+      })
+      .catch(error => {
+        // Handle any errors that occurred during the POST request
+        dispatch({
+          type: 'QUIZ_ERROR',
+          payload: error.message
+        });
+      });
+  };
   }
-}
+
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
