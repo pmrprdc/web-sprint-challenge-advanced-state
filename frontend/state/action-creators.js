@@ -93,20 +93,20 @@ export function postAnswer(answers) {
     dispatch(setSelectedAnswer(null))
     // - Dispatch an action to set the server message to state
     axios
-      .post( answers,'http://localhost:9000/api/quiz/answer') // Replace '/api/quiz' with your actual API endpoint
+      .post('http://localhost:9000/api/quiz/answer',answers) // Replace '/api/quiz' with your actual API endpoint
       .then((response) => {
         // Extract the quiz data from the response
-        console.log(response.data); // Adjust this line based on your API response structure
+        console.log(response.data.message); // Adjust this line based on your API response structure
         
         // On successful GET:
         // - Dispatch an action to send the obtained quiz to its state
-        dispatch(setQuizIntoState(quiz)); // Replace 'setQuiz' with your actual action creator
-        dispatch(setInfoMessage('Quiz loaded successfully')); // Replace 'setMessage' with your actual action creator
+        ; // Replace 'setQuiz' with your actual action creator
+        dispatch(setInfoMessage(response.data.message)); // Replace 'setMessage' with your actual action creator
       })
       .catch((error) => {
         // If there's an error during the API call, dispatch an action to handle the error
         dispatch(setInfoMessage('Error loading quiz')); // Replace 'setMessage' with your actual action creator
-        dispatch(setInfoMessage(error)); // Replace 'quizError' with your actual error handling action creator
+        dispatch(setInfoMessage("error")); // Replace 'quizError' with your actual error handling action creator
       });
     // - Dispatch the fetching of the next quiz
 

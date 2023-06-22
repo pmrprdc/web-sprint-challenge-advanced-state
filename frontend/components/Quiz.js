@@ -12,11 +12,8 @@ function Quiz(props) {
   const { quiz, selectedAnswer, postAnswer, postQuiz } = props;
 
   const clickhandler = (e) => {
-    const selectionId = quiz.answers.map(x=>{
-     console.log(x.text, x.answer_id)
-    })
-    console.log(selectionId)
-    postQuiz({ "quiz_id": quiz.quiz_id, "answer_id": selectionId })
+    
+    postAnswer({ "quiz_id": quiz.quiz_id, "answer_id": selectedAnswer })
    
   }
   
@@ -33,7 +30,7 @@ function Quiz(props) {
             <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
-                {console.log(quiz.answers)}
+                
               <div className={selectedAnswer === quiz.answers[0].answer_id ? "answer selected" : "answer"}>
                  {quiz.answers[0].text}
                 <button id={quiz.answers[0].answer_id} onClick={()=>props.setSelectedAnswer(quiz.answers[0].answer_id)}>
