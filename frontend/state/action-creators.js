@@ -131,25 +131,25 @@ export function postAnswer(answers) {
     
   
 }
-export function postQuiz(submitData) {
+export function postQuiz(data) {
   return function (dispatch) {
+    let payload = { "question_text": data.newQuestion, "true_answer_text": data.newTrueAnswer, "false_answer_text": data.newFalseAnswer }
     // Make the POST request using Axios
-    axios.post('http://localhost:9000/api/quiz/new', submitData)
+    axios.post('http://localhost:9000/api/quiz/new', payload)
       .then(response => {
         // On successful POST:
         
         // - Dispatch the correct message to the appropriate state
-        dispatch(setInfoMessage());
+        dispatch(setInfoMessage(response.statusText));
 
         // - Dispatch the resetting of the form
-        dispatch(resetForm());
+        dispatch(resetForm())
+        
       })
       .catch(error => {
         // Handle any errors that occurred during the POST request
-        dispatch({
-          type: 'QUIZ_ERROR',
-          payload: error.message
-        });
+        dispatch(setInfoMessage(error.message)
+      ) ;
       });
   };
   }
