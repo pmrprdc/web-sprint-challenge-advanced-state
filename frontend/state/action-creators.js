@@ -109,9 +109,27 @@ export function postAnswer(answers) {
         dispatch(setInfoMessage("error")); // Replace 'quizError' with your actual error handling action creator
       });
     // - Dispatch the fetching of the next quiz
+    dispatch(resetForm());
 
+    axios
+      .get('http://localhost:9000/api/quiz/next') // Replace '/api/quiz' with your actual API endpoint
+      .then((response) => {
+        // Extract the quiz data from the response
+        const quiz = response.data; // Adjust this line based on your API response structure
+        
+        // On successful GET:
+        // - Dispatch an action to send the obtained quiz to its state
+        dispatch(setQuizIntoState(quiz)); // Replace 'setQuiz' with your actual action creator
+       // Replace 'setMessage' with your actual action creator
+      })
+      .catch((error) => {
+        // If there's an error during the API call, dispatch an action to handle the error
+        dispatch(setInfoMessage('Error loading quiz')); // Replace 'setMessage' with your actual action creator
+        dispatch(setInfoMessage(error)); // Replace 'quizError' with your actual error handling action creator
+      });
+  };
     
-  }
+  
 }
 export function postQuiz(submitData) {
   return function (dispatch) {
