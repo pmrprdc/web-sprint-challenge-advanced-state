@@ -46,7 +46,7 @@ function Quiz(props) {
               </div>
             </div>
 
-            <button selected={selectedAnswer} onClick={clickhandler} id="submitAnswerBtn">Submit answer</button>
+            <button disabled={!selectedAnswer} selected={selectedAnswer} onClick={clickhandler} id="submitAnswerBtn">Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
