@@ -70,13 +70,16 @@ const initialFormState = {
   newTrueAnswer: '',
   newFalseAnswer: '',
 }
+
+
 function form(state = initialFormState, action) {
   switch (action.type) {
     case INPUT_CHANGE:
-      return {...state, ...action.payload };
+      return { ...state, ...action.payload };
+    case RESET_FORM:
+      return initialFormState;
     default:
       return state;
   }
 }
-
 export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form })
