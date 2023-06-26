@@ -30,6 +30,8 @@ export function Form(props) {
     postQuiz(form)
   }
 
+    const isSubmitDisabled = Object.values(form).some((value) => value.trim().length === 0);
+
   return (
 
     <form id="form" onSubmit={onSubmit}>
@@ -37,7 +39,7 @@ export function Form(props) {
       <input maxLength={50} onChange={onChange} id="newQuestion" placeholder="Enter question" value={form.newQuestion} />
       <input maxLength={50} onChange={onChange} id="newTrueAnswer" placeholder="Enter true answer" value={form.newTrueAnswer}/>
       <input maxLength={50} onChange={onChange} id="newFalseAnswer" placeholder="Enter false answer" value={form.newFalseAnswer} />
-      <button id="submitNewQuizBtn">Submit new quiz</button>
+      <button id="submitNewQuizBtn" disabled={isSubmitDisabled}>Submit new quiz</button>
     </form>
   )
 }
