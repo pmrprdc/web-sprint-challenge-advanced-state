@@ -7,14 +7,14 @@ const { localStorage } = window;
 export function Form(props) {
   
   const {form, inputChange, postQuiz} = props;
-  useEffect(() => {
-    // Retrieve persisted form state from local storage
-    const persistedFormState = localStorage.getItem('formState');
-    if (persistedFormState) {
-      const parsedFormState = JSON.parse(persistedFormState);
-      inputChange(parsedFormState);
-    }
-  }, [inputChange]);
+  // useEffect(() => {
+  //   // Retrieve persisted form state from local storage
+  //   const persistedFormState = localStorage.getItem('formState');
+  //   if (persistedFormState) {
+  //     const parsedFormState = JSON.parse(persistedFormState);
+  //     inputChange(parsedFormState);
+  //   }
+  // }, [inputChange]);
 
 
    
@@ -30,7 +30,9 @@ export function Form(props) {
     postQuiz(form)
   }
 
-    const isSubmitDisabled = Object.values(form).some((value) => value.trim().length === 0);
+  const isDisabled = () => {
+    return Object.values(form).some(value => !value.trim().length)
+  }
 
   return (
 
@@ -39,7 +41,7 @@ export function Form(props) {
       <input maxLength={50} onChange={onChange} id="newQuestion" placeholder="Enter question" value={form.newQuestion} />
       <input maxLength={50} onChange={onChange} id="newTrueAnswer" placeholder="Enter true answer" value={form.newTrueAnswer}/>
       <input maxLength={50} onChange={onChange} id="newFalseAnswer" placeholder="Enter false answer" value={form.newFalseAnswer} />
-      <button id="submitNewQuizBtn" disabled={isSubmitDisabled}>Submit new quiz</button>
+      <button id="submitNewQuizBtn" disabled={isDisabled()}>Submit new quiz</button>
     </form>
   )
 }

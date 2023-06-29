@@ -74,7 +74,7 @@ export function fetchQuiz() {
         // On successful GET:
         // - Dispatch an action to send the obtained quiz to its state
         dispatch(setQuizIntoState(quiz)); // Replace 'setQuiz' with your actual action creator
-        dispatch(setInfoMessage('Quiz loaded successfully')); // Replace 'setMessage' with your actual action creator
+       // Replace 'setMessage' with your actual action creator
       })
       .catch((error) => {
         // If there's an error during the API call, dispatch an action to handle the error
@@ -90,17 +90,13 @@ export function postAnswer(answers) {
     // On successful POST:
 
     // - Dispatch an action to reset the selected answer state
-    dispatch(setSelectedAnswer(null))
     // - Dispatch an action to set the server message to state
     axios
       .post('http://localhost:9000/api/quiz/answer',answers) // Replace '/api/quiz' with your actual API endpoint
       .then((response) => {
         // Extract the quiz data from the response
-        if(response.data.message==="What a shame! That was the incorrect answer"){
-          dispatch(setInfoMessage("That was the incorrect answer"))
-        } else {
-          dispatch(setInfoMessage("That was the correct answer"))
-        }; // Adjust this line based on your API response structure
+        dispatch(setSelectedAnswer(null))
+        dispatch(setInfoMessage(response.data.message)) // Adjust this line based on your API response structure
         
       
       
@@ -113,26 +109,11 @@ export function postAnswer(answers) {
         // If there's an error during the API call, dispatch an action to handle the error
         dispatch(setInfoMessage('Error loading quiz')); // Replace 'setMessage' with your actual action creator
         dispatch(setInfoMessage("error")); // Replace 'quizError' with your actual error handling action creator
-      });
+      }).finally(()=>{dispatch(fetchQuiz())});
     // - Dispatch the fetching of the next quiz
-    dispatch(resetForm());
+   
 
-    axios
-      .get('http://localhost:9000/api/quiz/next') // Replace '/api/quiz' with your actual API endpoint
-      .then((response) => {
-        // Extract the quiz data from the response
-        const quiz = response.data; // Adjust this line based on your API response structure
-        
-        // On successful GET:
-        // - Dispatch an action to send the obtained quiz to its state
-        dispatch(setQuizIntoState(quiz)); // Replace 'setQuiz' with your actual action creator
-       // Replace 'setMessage' with your actual action creator
-      })
-      .catch((error) => {
-        // If there's an error during the API call, dispatch an action to handle the error
-        dispatch(setInfoMessage('Error loading quiz')); // Replace 'setMessage' with your actual action creator
-        dispatch(setInfoMessage(error)); // Replace 'quizError' with your actual error handling action creator
-      });
+   
   };
     
   
