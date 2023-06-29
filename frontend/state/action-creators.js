@@ -140,7 +140,7 @@ export function postQuiz(data) {
         // On successful POST:
         
         // - Dispatch the correct message to the appropriate state
-        dispatch(setInfoMessage(response.statusText));
+        dispatch(setInfoMessage(`Congrats: "${payload.question_text}" is a great question!`));
 
         // - Dispatch the resetting of the form
         dispatch(resetForm())
