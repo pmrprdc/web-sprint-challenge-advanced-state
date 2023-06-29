@@ -96,12 +96,18 @@ export function postAnswer(answers) {
       .post('http://localhost:9000/api/quiz/answer',answers) // Replace '/api/quiz' with your actual API endpoint
       .then((response) => {
         // Extract the quiz data from the response
-        console.log(response.data.message); // Adjust this line based on your API response structure
+        if(response.data.message==="What a shame! That was the incorrect answer"){
+          dispatch(setInfoMessage("That was the incorrect answer"))
+        } else {
+          dispatch(setInfoMessage("That was the correct answer"))
+        }; // Adjust this line based on your API response structure
         
+      
+      
         // On successful GET:
         // - Dispatch an action to send the obtained quiz to its state
         ; // Replace 'setQuiz' with your actual action creator
-        dispatch(setInfoMessage(response.data.message)); // Replace 'setMessage' with your actual action creator
+        // Replace 'setMessage' with your actual action creator
       })
       .catch((error) => {
         // If there's an error during the API call, dispatch an action to handle the error
